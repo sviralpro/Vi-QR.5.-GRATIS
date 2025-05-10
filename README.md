@@ -1,4 +1,21 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Pro QR Premium - Generador Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
         
         * {
             margin: 0;
@@ -371,7 +388,15 @@
                 min-width: 100%;
             }
         }
-    
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Viral Pro QR Premium</h1>
+            <p>Genera códigos QR profesionales en segundos</p>
+        </div>
+    </header>
     
     <nav>
         <div class="container">
