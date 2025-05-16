@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Pro QR Premium - Generador Profesional</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header mejorado */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Navegación moderna */
+        nav {
+            background: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 20px;
+        }
+        
+        nav ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+            background: rgba(108, 92, 231, 0.1);
+        }
+        
+        /* Secciones redondeadas */
+        section {
+            background: white;
+            margin: 30px 0;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        /* Generador de QR mejorado */
+        .qr-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .qr-input {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .qr-result {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            min-height: 150px;
+            margin-bottom: 20px;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+        
+        /* Botones modernos */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5649d1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+        
+        .btn-premium {
+            background: linear-gradient(135deg, var(--accent), #e84393);
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(253, 121, 168, 0.5);
+        }
+        
+        /* Contador de QR gratis */
+        .free-counter {
+            background: rgba(0, 184, 148, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .free-counter p {
+            margin-bottom: 5px;
+            font-size: 0.95rem;
+        }
+        
+        #free-count {
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        #next-free {
+            display: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        #countdown {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* Sección de QR resultante */
+        #qr-code {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        #download-section {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+        
+        /* Planes mejorados */
+        .plans-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .plan {
+            flex: 1;
+            min-width: 300px;
+            padding: 30px;
+            border-radius: 15px;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: #dfe6e9;
+        }
+        
+        .plan h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .plan .price {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        .plan ul {
+            margin: 25px 0;
+            list-style: none;
+        }
+        
+        .plan ul li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .plan ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .plan.premium {
+            border: 2px solid var(--accent);
+            transform: scale(1.02);
+        }
+        
+        .plan.premium::before {
+            background: linear-gradient(90deg, var(--accent), #e84393);
+        }
+        
+        .plan.premium .price {
+            color: #e84393;
+        }
+        
+        .plan.premium h3 {
+            color: #e84393;
+        }
+        
+        /* Sección de contacto mejorada */
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .bank-info {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(108, 92, 231, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .bank-info h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .bank-info p {
+            margin-bottom: 10px;
+        }
+        
+        .bank-info strong {
+            color: var(--dark);
+        }
+        
+        /* Efectos de hover */
+        .plan:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 5px 0;
+            }
+            
+            .qr-container, .plans-container, .contact-info {
+                flex-direction: column;
+            }
+            
+            .plan {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Viral Pro QR Premium</h1>
+            <p>Genera códigos QR profesionales en segundos</p>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#generador">Generador QR</a></li>
+                <li><a href="#planes">Planes Premium</a></li>
+                <li><a href="#contacto">Pagos y Soporte</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <section id="generador">
+            <h2>Generador de Códigos QR</h2>
+            <div class="qr-container">
+                <div class="qr-input">
+                    <label for="qr-content">Ingresa tu texto, URL o datos:</label>
+                    <textarea id="qr-content" placeholder="Ejemplo: https://tunegocio.com o Información de contacto..."></textarea>
+                    <button id="generate-btn" class="btn btn-primary">Generar Código QR</button>
+                    
+                    <div id="free-counter" class="free-counter">
+                        <p>Tus generaciones gratuitas esta semana: <span id="free-count">5</span>/5</p>
+                        <p id="next-free">Próximos QR gratis disponibles en: <span id="countdown"></span></p>
+                    </div>
+                </div>
+                <div class="qr-result">
+                    <div id="qr-code"></div>
+                    <div id="download-section">
+                        <button id="download-btn" class="btn btn-primary">Descargar QR</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="planes">
+            <h2>Nuestros Planes Premium</h2>
+            
+            <div class="plans-container">
+                <div class="plan">
+                    <h3>Plan Básico</h3>
+                    <div class="price">$0</div>
+                    <ul>
+                        <li>5 QR por semana</li>
+                        <li>Generación básica</li>
+                        <li>Formato estándar</li>
+                        <li>Soporte por email</li>
+                    </ul>
+                </div>
+                
+                <div class="plan premium">
+                    <h3>Plan Viral Pro</h3>
+                    <div class="price">$25.000 ARS/año</div>
+                    <ul>
+                        <li>Generación ilimitada de QR</li>
+                        <li>Personalización avanzada</li>
+                        <li>Opciones de color y diseño</li>
+                        <li>Estadísticas de escaneo</li>
+                        <li>Soporte prioritario 24/7</li>
+                        <li>Marca de agua removible</li>
+                    </ul>
+                    <button id="upgrade-btn" class="btn btn-premium">¡Actualizar a Premium!</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contacto">
+            <h2>Pagos y Soporte</h2>
+            <p>Para activar tu plan Premium, realiza una transferencia bancaria con los siguientes datos:</p>
+            
+            <div class="contact-info">
+                <div class="bank-info">
+                    <h3>Datos Bancarios</h3>
+                    <p><strong>dinero</strong> [mercado pago]</p>
+                    <p><strong>titula:</strong> [damian]</p>
+                    <p><strong>CBU/CVU:</strong> 0000003100050845562885</p>
+                    <p><strong>Monto:</strong> $25.000 (pesos argentinos)</p>
+                </div>
+                
+                <div class="bank-info">
+                    <h3>Activación del Servicio</h3>
+                    <p>Después de realizar el pago, envíanos el comprobante a:</p>
+                    <p><strong>Email:</strong> sviralpro@gmail.com</p>
+                    <p><strong>WhatsApp:</strong> +54 9 [3564565921]</p>
+                    <p>Recibirás tu activación en menos de 24 horas hábiles.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // Variables de estado
+        let freeQrCount = 5; // Máximo de 5 QR gratis por semana
+        let freeQrRemaining = 5; // Inicialmente todos disponibles
+        let proUser = false;
+        
+        // Elementos del DOM
+        const qrContent = document.getElementById('qr-content');
+        const generateBtn = document.getElementById('generate-btn');
+        const qrCodeDiv = document.getElementById('qr-code');
+        const downloadSection = document.getElementById('download-section');
+        const downloadBtn = document.getElementById('download-btn');
+        const freeCounter = document.getElementById('free-counter');
+        const freeCount = document.getElementById('free-count');
+        const nextFree = document.getElementById('next-free');
+        const countdown = document.getElementById('countdown');
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si es usuario Pro
+            if(localStorage.getItem('proUser') === 'true') {
+                proUser = true;
+                freeCounter.style.display = 'none';
+            }
+            
+            // Verificar QRs gratuitos usados
+            if(localStorage.getItem('lastFreeQrDate')) {
+                const lastDate = new Date(localStorage.getItem('lastFreeQrDate'));
+                const today = new Date();
+                const diffTime = today - lastDate;
+                const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                
+                // Verificar si estamos dentro de la misma semana
+                if(diffDays < 7) {
+                    // Recuperar número de QR restantes
+                    if(localStorage.getItem('freeQrRemaining')) {
+                        freeQrRemaining = parseInt(localStorage.getItem('freeQrRemaining'));
+                        freeCount.textContent = freeQrRemaining;
+                        
+                        // Si no quedan QR, mostrar cuenta regresiva
+                        if(freeQrRemaining <= 0) {
+                            showCountdown();
+                        }
+                    }
+                } else {
+                    // Si pasó más de una semana, reiniciar contador
+                    freeQrRemaining = freeQrCount;
+                    freeCount.textContent = freeQrRemaining;
+                    localStorage.removeItem('lastFreeQrDate');
+                    localStorage.removeItem('freeQrRemaining');
+                }
+            }
+            
+            // Ocultar sección de descarga inicialmente
+            downloadSection.style.display = 'none';
+            nextFree.style.display = 'none';
+        });
+        
+        // Generar QR
+        generateBtn.addEventListener('click', function() {
+            const content = qrContent.value.trim();
+            
+            if(!content) {
+                alert('Por favor ingresa contenido para generar el código QR');
+                return;
+            }
+            
+            if(!proUser && freeQrRemaining <= 0) {
+                alert('Has usado tus 5 QR gratuitos esta semana. Actualiza a Premium para generación ilimitada.');
+                return;
+            }
+            
+            // Limpiar contenedor QR
+            qrCodeDiv.innerHTML = '';
+            
+            // Generar nuevo QR
+            new QRCode(qrCodeDiv, {
+                text: content,
+                width: 200,
+                height: 200,
+                colorDark: "#2d3436",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            // Mostrar sección de descarga
+            downloadSection.style.display = 'block';
+            
+            // Actualizar contador si es gratis
+            if(!proUser) {
+                freeQrRemaining--;
+                freeCount.textContent = freeQrRemaining;
+                localStorage.setItem('freeQrRemaining', freeQrRemaining);
+                
+                // Guardar la fecha del primer uso en la semana
+                if(!localStorage.getItem('lastFreeQrDate')) {
+                    localStorage.setItem('lastFreeQrDate', new Date().toString());
+                }
+                
+                // Mostrar cuenta regresiva si no quedan QR
+                if(freeQrRemaining <= 0) {
+                    showCountdown();
+                }
+            }
+        });
+        
+        // Descargar QR
+        downloadBtn.addEventListener('click', function() {
+            const canvas = qrCodeDiv.querySelector('canvas');
+            if(canvas) {
+                const url = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'viralpro-qr.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        });
+        
+        // Actualizar a Premium
+        upgradeBtn.addEventListener('click', function() {
+            if(confirm('¿Deseas actualizar al Plan Viral Pro por $25.000 ARS anuales?\n\nPodrás generar QR ilimitados con funciones premium.')) {
+                alert('Por favor realiza la transferencia a nuestra cuenta bancaria y envíanos el comprobante para activar tu cuenta Premium.');
+                
+                // Simular activación (en producción esto sería después del pago verificado)
+                // proUser = true;
+                // localStorage.setItem('proUser', 'true');
+                // freeCounter.style.display = 'none';
+                // alert('¡Cuenta Premium activada! Ahora puedes generar QR ilimitados.');
+            }
+        });
+        
+        // Mostrar cuenta regresiva para próximo QR gratis
+        function showCountdown() {
+            nextFree.style.display = 'block';
+            
+            const lastDate = new Date(localStorage.getItem('lastFreeQrDate'));
+            const nextFreeDate = new Da
