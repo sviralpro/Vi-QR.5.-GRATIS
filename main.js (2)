@@ -1,0 +1,174 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // Saludo inicial basado en la hora
+    function getTimeBasedGreeting() {
+        const hour = new Date().getHours();
+        if (hour < 12) return 'Buenos días';
+        if (hour < 19) return 'Buenas tardes';
+        return 'Buenas noches';
+    }
+
+    // Mostrar mensaje de bienvenida
+    setTimeout(() => {
+        addBotMessage(`
+            <strong>${getTimeBasedGreeting()}! 👋</strong><br><br>
+            Soy tu Super Calculadora GPT. Puedes preguntarme cosas como:<br><br>
+            • "¿Cuánto es 10 por 3?"<br>
+            • "Quiero sumar 5 y 7"<br>
+            • "Calcula 20 menos 8"<br>
+            • "Necesito multiplicar 15 por 4"<br><br>
+            ¡Pregúntame lo que necesites!
+        `);
+    }, 500);
+
+    // Añadir mensaje al chat
+    function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+        
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'avatar';
+        avatarDiv.innerHTML = isUser ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'content';
+        contentDiv.innerHTML = content;
+        
+        messageDiv.appendChild(avatarDiv);
+        messageDiv.appendChild(contentDiv);
+        chatMessages.appendChild(messageDiv);
+        
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function addUserMessage(content) {
+        addMessage(content, true);
+    }
+
+    function addBotMessage(content) {
+        addMessage(content, false);
+    }
+
+    // Procesar expresiones matemáticas
+    function processMathExpression(input) {
+        try {
+            // Limpiar y normalizar el texto
+            let expression = input.toLowerCase()
+                .replace(/(cuánto es|calcula|quiero|necesito|dime|por favor|puedes|me puedes|qué|es|el|la|los|las|un|una|unos|unas|de|del|al|a|en|con|por|para|adivina|resultado|valor|número|digamos|dame|da|mira|oye|ver|saber|decir|dime|darme|dar|mira|oye|ver|saber|decir)/g, '')
+                .replace(/\?|¿|¡|!/g, '')
+                .replace(/por/g, '*')
+                .replace(/x/g, '*')
+                .replace(/multiplicado por/g, '*')
+                .replace(/dividido por/g, '/')
+                .replace(/entre/g, '/')
+                .replace(/más/g, '+')
+                .replace(/menos/g, '-')
+                .replace(/al cuadrado/g, '**2')
+                .replace(/a la/g, '**')
+                .replace(/elevado a/g, '**')
+                .replace(/raíz cuadrada de/g, 'Math.sqrt')
+                .replace(/%/g, '/100')
+                .trim();
+            
+            // Eliminar caracteres no matemáticos
+            expression = expression.replace(/[^0-9+\-*/.()^%Math.sqrt]/g, '');
+            
+            if (!expression) throw new Error('Expresión no válida');
+            
+            // Calcular resultado
+            const result = new Function('return ' + expression)();
+            
+            if (isNaN(result)) throw new Error('Resultado no numérico');
+            
+            return {
+                success: true,
+                result: result,
+                expression: expression
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    // Generar explicación de la operación
+    function generateExplanation(expression, result) {
+        const parts = expression.split(/([\+\-\*\/])/);
+        if (parts.length !== 3) return '';
+        
+        const [num1, operator, num2] = parts;
+        const n1 = parseFloat(num1);
+        const n2 = parseFloat(num2);
+        
+        const operators = {
+            '+': 'sumar',
+            '-': 'restar',
+            '*': 'multiplicar',
+            '/': 'dividir'
+        };
+        
+        return `Para obtener ${result}, ${operators[operator]} ${n1} ${operator === '+' ? 'con' : 'por'} ${n2}.`;
+    }
+
+    // Manejar entrada del usuario
+    function handleUserInput() {
+        const input = userInput.value.trim();
+        if (!input) return;
+        
+        addUserMessage(input);
+        userInput.value = '';
+        
+        // Mostrar estado "escribiendo..."
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message bot-message typing-indicator';
+        typingIndicator.innerHTML = `
+            <div class="avatar"><i class="fas fa-robot"></i></div>
+            <div class="content">Escribiendo...</div>
+        `;
+        chatMessages.appendChild(typingIndicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Procesar después de un pequeño retraso
+        setTimeout(() => {
+            // Eliminar indicador de "escribiendo"
+            chatMessages.removeChild(typingIndicator);
+            
+            const calculation = processMathExpression(input);
+            
+            if (calculation.success) {
+                const explanation = generateExplanation(calculation.expression, calculation.result);
+                addBotMessage(`
+                    <strong>Resultado:</strong><br>
+                    <div class="result">${calculation.result}</div>
+                    ${explanation ? `<div class="explanation">${explanation}</div>` : ''}
+                    <br>¿Necesitas otra operación?
+                `);
+            } else {
+                addBotMessage(`
+                    No pude entender tu operación. Intenta escribiéndola de otra forma como:<br><br>
+                    • "10 por 3"<br>
+                    • "5 más 8 menos 2"<br>
+                    • "20 dividido entre 4"<br><br>
+                    ¿Qué operación necesitas?
+                `);
+            }
+        }, 1000 + Math.random() * 1000); // Retraso aleatorio para parecer más natural
+    }
+
+    // Event listeners
+    sendButton.addEventListener('click', handleUserInput);
+    
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            handleUserInput();
+        }
+    });
+
+    // Enfocar el input al cargar
+    userInput.focus();
+});
